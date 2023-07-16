@@ -34,7 +34,7 @@ CAC="[\e[1;33mACTION\e[0m]"
 INSTLOG="install.log"
 
 
-# apt update && apt upgrade -y
+sudo apt update && apt upgrade -y
 app=(fish
     curl
     git
@@ -48,11 +48,11 @@ app=(fish
 for apps in ${app[@]}; do 
     echo -e  "$CNT Installing $apps ..."
     # Edit below 
-    sudo apt install $apps -y
+    sudo apt install $apps -y &>>$INSTLOG 
 done
 
 # Installing fisher
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
 plugins=(jorgebucaran/fisher 
     jorgebucaran/autopair.fish 
     patrickf1/fzf.fish 
@@ -62,18 +62,18 @@ plugins=(jorgebucaran/fisher
 )
 for plugin in ${plugins[@]}; do 
     # Edit below
-    fisher install $plugin
+    fisher install $plugin &>>$INSTLOG 
 done
 
 # Installing neovim 
-curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz
+curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG 
 sudo tar -xzvf nvim.tar.gz -C /opt/
 mv /opt/nvim-linux64 /opt/nvim
 ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
 rm nvim.tar.gz
 
 # cloning nvim
-git clone https://github.com/BlackstormCoder/neovim_dotfiles.git
+git clone https://github.com/BlackstormCoder/neovim_dotfiles.git &>>$INSTLOG 
 
 for DIR in tmux nvim fish; do 
     DIRPATH=~/.config/$DIR
