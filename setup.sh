@@ -63,6 +63,12 @@ for plugin in ${plugins[@]}; do
     fisher install $plugin
 done
 
+# Installing neovim 
+curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz
+sudo tar -xzvf nvim.tar.gz -C /opt/
+mv /opt/nvim-linux64 /opt/nvim
+ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+rm nvim.tar.gz
 
 # cloning nvim
 git clone https://github.com/BlackstormCoder/neovim_dotfiles.git
