@@ -49,7 +49,7 @@ app=(fish
     clang
 )
 for apps in ${app[@]}; do 
-    echo -e  "$CAC Installing $apps ..."
+    echo -e  "$CAT Installing $apps ..."
     # Edit below 
     sudo apt install $apps -y &>>$INSTLOG 
 done
@@ -68,12 +68,13 @@ plugins=(jorgebucaran/fisher
 )
 for plugin in ${plugins[@]}; do 
     # Edit below
-    echo -e "$CAC Installing fisher $plugin"
+    echo -e "$CAT Installing fisher $plugin"
     fisher install $plugin &>>$INSTLOG 
 done
 
 install_neovim(){
     # Installing neovim 
+    echo "$CAT Installing neovim"
     curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG 
     sudo tar -xzvf nvim.tar.gz -C /opt/
     sudo mv /opt/nvim-linux64 /opt/nvim
@@ -98,12 +99,13 @@ cp -r tmux fish ~/.config/
 cp -r neovim_dotfiles ~/.config/nvim
 
 install_fonts(){
+    echo "$CAT Installing nerd-fonts.."
     url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.tar.xz"
-    wget $url
+    wget $url &>>$INSTLOG
     FONT_DIR="~/.local/share/fonts/"
-    mkdir $FONT_DIR
-    tar xvf JetBrainsMono.tar.xz -C $FONT_DIR 
-    fc-cache -fv
+    mkdir -p $FONT_DIR
+    tar xvf JetBrainsMono.tar.xz -C $FONT_DIR &>>$INSTLOG 
+    fc-cache -fv &>>$INSTLOG
 
 }
 install_fonts
