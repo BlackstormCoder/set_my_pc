@@ -43,16 +43,15 @@ app=(fish
     grc
     lsd
     python3
-    bypthon
+    bpython
 )
 for apps in ${app[@]}; do 
     echo -e  "$CNT Installing $apps ..."
     # Edit below 
-    sudo apt install $apps
+    sudo apt install $apps -y
 done
 
 # Installing fisher
-fish
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 plugins=(jorgebucaran/fisher 
     jorgebucaran/autopair.fish 
