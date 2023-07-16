@@ -25,7 +25,7 @@ ${RESET}"
 banner
 
 # set some colors
-CNT="[\e[1;36mNOTE\e[0m]"
+CNT="\e[0m[\e[1;36mNOTE\e[0m]"
 COK="[\e[1;32mOK\e[0m]"
 CER="[\e[1;31mERROR\e[0m]"
 CAT="[\e[1;37mATTENTION\e[0m]"
@@ -59,7 +59,8 @@ done
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &>>$INSTLOG
 
 # Installing fisher
-fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher &>>$INSTLOG'
+fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher '
+
 plugins=(jorgebucaran/fisher 
     jorgebucaran/autopair.fish 
     patrickf1/fzf.fish 
@@ -75,7 +76,7 @@ done
 
 install_neovim(){
     # Installing neovim 
-    echo "$CAT Installing neovim"
+    echo -e "$CAT Installing neovim"
     curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG
     sudo tar -xzvf nvim.tar.gz -C /opt/ &>>$INSTLOG
     sudo mv /opt/nvim-linux64 /opt/nvim
@@ -100,7 +101,7 @@ cp -r tmux fish ~/.config/
 cp -r neovim_dotfiles ~/.config/nvim
 
 install_fonts(){
-    echo "$CAT Installing nerd-fonts.."
+    echo -e "$CAT Installing nerd-fonts.."
     url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.tar.xz"
     wget $url &>>$INSTLOG
     mkdir -p ~/.local/share/fonts/
