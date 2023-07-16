@@ -54,6 +54,9 @@ for apps in ${app[@]}; do
     sudo apt install $apps -y &>>$INSTLOG 
 done
 
+# Installing TPM 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # Installing fisher
 fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
 plugins=(jorgebucaran/fisher 
@@ -76,11 +79,11 @@ install_neovim(){
     sudo mv /opt/nvim-linux64 /opt/nvim
     sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
     rm nvim.tar.gz
+    git clone https://github.com/BlackstormCoder/neovim_dotfiles.git &>>$INSTLOG 
 }
 install_neovim
 
 # cloning nvim
-git clone https://github.com/BlackstormCoder/neovim_dotfiles.git &>>$INSTLOG 
 
 for DIR in tmux nvim fish; do 
     DIRPATH=~/.config/$DIR
@@ -94,3 +97,13 @@ done
 cp -r tmux fish ~/.config/
 cp -r neovim_dotfiles ~/.config/nvim
 
+install_fonts(){
+    url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.tar.xz"
+    wget $url
+    FONT_DIR="~/.local/share/fonts/"
+    mkdir $FONT_DIR
+    tar xvf JetBrainsMono.tar.xz -C $FONT_DIR 
+    fc-cache -fv
+
+}
+install_fonts
