@@ -24,32 +24,58 @@ ${RESET}"
 }
 banner
 
-install_status(){
-    echo -e "${CYAN}|-----------------------------------------------${RESET}" 
-    echo -e "${GREEN}[+]${RESET} $1 "
-    echo -e "${CYAN}|-----------------------------------------------${RESET}" 
-}
+# set some colors
+CNT="[\e[1;36mNOTE\e[0m]"
+COK="[\e[1;32mOK\e[0m]"
+CER="[\e[1;31mERROR\e[0m]"
+CAT="[\e[1;37mATTENTION\e[0m]"
+CWR="[\e[1;35mWARNING\e[0m]"
+CAC="[\e[1;33mACTION\e[0m]"
+INSTLOG="install.log"
 
-if [[ $EUID != 0 ]]; then
-    echo -e "${RED}[-]Please run this script as a root"
-    exit 1
-fi
 
 # apt update && apt upgrade -y
-app=(fish tmux rlwrap grc lsd python3 bypthon)
+app=(fish 
+    tmux 
+    rlwrap
+    grc
+    lsd
+    python3
+    bypthon
+)
 for apps in ${app[@]}; do 
-    install_status "Installing $apps ..."
+    echo -e  "$CNT Installing $apps ..."
     # Edit below 
-    echo apt install $apps
+    sudo apt install $apps
 done
 
 # Installing fisher
-# curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-plugins=(jorgebucaran/fisher jorgebucaran/autopair.fish patrickf1/fzf.fish franciscolourenco/done jorgebucaran/replay.fish nickeb96/puffer-fish)
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+plugins=(jorgebucaran/fisher 
+    jorgebucaran/autopair.fish 
+    patrickf1/fzf.fish 
+    franciscolourenco/done
+    jorgebucaran/replay.fish
+    nickeb96/puffer-fish
+)
 for plugin in ${plugins[@]}; do 
     # Edit below
-    echo fisher install $plugin
+    fisher install $plugin
 done
 
-# make one repo in there add all config
-# make this script one liner to use it with curl command
+
+# cloning nvim
+git clone https://github.com/BlackstormCoder/neovim_dotfiles.git
+
+for DIR in tmux nvim fish; do 
+    DIRPATH=~/.config/$DIR
+    if [ -d "$DIRPATH" ]; then 
+        echo -e "$CAT - Config for $DIR located, backing up."
+        mv $DIRPATH $DIRPATH-back &>> $INSTLOG
+        echo -e "$COK - Backed up $DIR to $DIRPATH-back."
+    fi
+done
+
+cp -r tmux fish ~/.config/
+cp -r neovim_dotfiles ~/.config/nvim
+
