@@ -35,7 +35,9 @@ INSTLOG="install.log"
 
 
 # apt update && apt upgrade -y
-app=(fish 
+app=(fish
+    curl
+    git
     tmux 
     rlwrap
     grc
@@ -50,6 +52,7 @@ for apps in ${app[@]}; do
 done
 
 # Installing fisher
+fish
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 plugins=(jorgebucaran/fisher 
     jorgebucaran/autopair.fish 
