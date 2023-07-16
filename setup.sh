@@ -42,6 +42,7 @@ app=(fish
     tmux 
     rlwrap
     grc
+    fzf
     lsd
     python3
     bpython
@@ -102,9 +103,8 @@ install_fonts(){
     echo "$CAT Installing nerd-fonts.."
     url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.tar.xz"
     wget $url &>>$INSTLOG
-    FONT_DIR="~/.local/share/fonts/"
-    mkdir -p $FONT_DIR
-    tar xvf JetBrainsMono.tar.xz -C $FONT_DIR &>>$INSTLOG 
+    mkdir -p ~/.local/share/fonts/
+    tar xvf JetBrainsMono.tar.xz -C ~/.local/share/fonts/ &>>$INSTLOG 
     fc-cache -fv &>>$INSTLOG
 
 }
