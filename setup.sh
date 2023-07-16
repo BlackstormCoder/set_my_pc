@@ -34,7 +34,8 @@ CAC="[\e[1;33mACTION\e[0m]"
 INSTLOG="install.log"
 
 
-sudo apt update && apt upgrade -y
+echo -e "$CNT Updating the repos.. "
+sudo apt update &>>$INSTLOG
 app=(fish
     curl
     git
@@ -44,9 +45,11 @@ app=(fish
     lsd
     python3
     bpython
+    gcc
+    clang
 )
 for apps in ${app[@]}; do 
-    echo -e  "$CNT Installing $apps ..."
+    echo -e  "$CAC Installing $apps ..."
     # Edit below 
     sudo apt install $apps -y &>>$INSTLOG 
 done
@@ -62,15 +65,19 @@ plugins=(jorgebucaran/fisher
 )
 for plugin in ${plugins[@]}; do 
     # Edit below
+    echo -e "$CAC Installing fisher $plugin"
     fisher install $plugin &>>$INSTLOG 
 done
 
-# Installing neovim 
-curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG 
-sudo tar -xzvf nvim.tar.gz -C /opt/
-sudo mv /opt/nvim-linux64 /opt/nvim
-sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
-rm nvim.tar.gz
+install_neovim(){
+    # Installing neovim 
+    curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG 
+    sudo tar -xzvf nvim.tar.gz -C /opt/
+    sudo mv /opt/nvim-linux64 /opt/nvim
+    sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+    rm nvim.tar.gz
+}
+install_neovim
 
 # cloning nvim
 git clone https://github.com/BlackstormCoder/neovim_dotfiles.git &>>$INSTLOG 
