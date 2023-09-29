@@ -6,6 +6,7 @@ alias ls="lsd"
 alias tree="lsd --tree"
 alias cp="cp -rv"
 alias rm="rm -rfv"
+alias copy="xsel -b < $1"
 alias bp='bpython'
 #alias mv='mv -r'
 #alias cat="bat"
