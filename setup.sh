@@ -36,7 +36,7 @@ INSTLOG="install.log"
 
 
 echo -e "$CNT Updating the repos.. "
-sudo apt update &>>$INSTLOG
+apt update &>>$INSTLOG
 app=(fish
     curl
     git
@@ -53,7 +53,7 @@ app=(fish
 for apps in ${app[@]}; do 
     echo -e  "$CAT Installing $apps ..."
     # Edit below 
-    sudo apt install $apps -y &>>$INSTLOG 
+    apt install $apps -y &>>$INSTLOG 
 done
 
 # Installing TPM 
@@ -79,9 +79,9 @@ install_neovim(){
     # Installing neovim 
     echo -e "$CAT Installing neovim"
     curl -L $(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep 'browser_' | cut -d\" -f4 | grep 'linux.*gz$') --output nvim.tar.gz &>>$INSTLOG
-    sudo tar -xzvf nvim.tar.gz -C /opt/ &>>$INSTLOG
-    sudo mv /opt/nvim-linux64 /opt/nvim
-    sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+    tar -xzvf nvim.tar.gz -C /opt/ &>>$INSTLOG
+    mv /opt/nvim-linux64 /opt/nvim
+    ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
     rm nvim.tar.gz
     git clone https://github.com/BlackstormCoder/neovim_dotfiles.git &>>$INSTLOG 
 }
